@@ -13,5 +13,5 @@
 
 1. 上半球面经纬线的投影（manimgl 实现）
    ![LatitudeLongtitude](./src/StereographicProjection/images/LatitudeLongtitude.png)
-2. 令投影点的 (R, G, B) 值分别等于对应半球面上点的 (x, y, z) 坐标的投影（opencv-python 实现）
+2. 令投影点的 (B, G, R) 值分别等于对应半球面上点的 (x, y, z) 坐标的投影（opencv-python 实现）
    ![color](./src/StereographicProjection/images/color.png)
