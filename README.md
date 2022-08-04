@@ -11,7 +11,7 @@
 
 ### 可视化结果
 
-1. 上半球面经纬线的投影（manimgl 实现）
-   ![LatitudeLongtitude](./src/StereographicProjection/images/LatitudeLongtitude.png)
-2. 令投影点的 (B, G, R) 值分别等于对应半球面上点的 (x, y, z) 坐标的投影（opencv-python 实现）
+1. 半球面经纬线的投影（matplotlib）
+   ![LatitudeLongtitude](./src/StereographicProjection/images/projection.png)
+2. 投影点在平面上坐标为 (X, Y)，记球面上对应点坐标为 (x, y, z)，令 (X, Y) 对应像素的颜色 (R, G, B) = ((x+1)/2, (y+1)/2, z) 得到的投影（opencv）
    ![color](./src/StereographicProjection/images/color.png)
