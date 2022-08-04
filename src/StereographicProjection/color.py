@@ -16,8 +16,8 @@ for i in range(width):
         y = -1.0 + j * steps_y
         if ((x * x + y * y) <= (1.0)):
             base = x * x + y * y + 1
-            img[i, j, 0] = int(((1.0 + (2*x)/(base)) / 2.0) * 255)
+            img[i, j, 0] = int(max((1 - x*x - y*y)/(base), 0) * 255)
+            img[i, j, 2] = int(((1.0 + (2*x)/(base)) / 2.0) * 255)
             img[i, j, 1] = int(((1.0 + (2*y)/(base)) / 2.0) * 255)
-            img[i, j, 2] = int(max((1 - x*x - y*y)/(base), 0) * 255)
 
 cv2.imwrite("./images/color.png", img)
