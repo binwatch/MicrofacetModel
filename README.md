@@ -12,6 +12,21 @@
 ### 可视化结果
 
 1. 半球面经纬线的投影（matplotlib）
-   ![LatitudeLongtitude](./src/StereographicProjection/images/projection.png)
+   ![LatitudeLongtitude](./images/projection.png)
 2. 投影点在平面上坐标为 (X, Y)，记球面上对应点坐标为 (x, y, z)，令 (X, Y) 对应像素的颜色 (R, G, B) = ((x+1)/2, (y+1)/2, z) 得到的投影（opencv）
-   ![color](./src/StereographicProjection/images/color.png)
+   
+   ![color](./images/color.png)
+
+## 材质实现
+
+### Rough Diffuse
+
+### Rough Conductor
+
+## Rough Conductor 材质反射光分布
+
+   ![reflect1](./images/reflect_1.png)
+
+   ![reflect2](./images/reflect_2.png)
+
+   ![reflect3](./images/reflect_3.png)
