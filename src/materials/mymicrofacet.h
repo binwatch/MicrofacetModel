@@ -152,7 +152,7 @@ public:
             // GGX
             Float tan_theta_m_2 = alpha_2 * sample.x() / (1.f - sample.x());
             cos_theta = dr::rsqrt(1.f + tan_theta_m_2);
-            cos_theta_2 = dr::sqr(cos_theta);
+            cos_theta_2 = cos_theta * cos_theta;
             sin_theta = dr::sqrt(1.f - cos_theta_2);
 
             // Compute probability density p(theta, phi) of the sampled position
@@ -162,8 +162,8 @@ public:
 
         return {
             Normal3f(cos_phi * sin_theta,
-                        sin_phi * sin_theta,
-                        cos_theta),
+                     sin_phi * sin_theta,
+                     cos_theta),
             pdf
         };
     }
