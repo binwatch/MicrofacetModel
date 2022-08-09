@@ -20,4 +20,4 @@ for i in range(width):
             img[i, j, 2] = int(((1.0 + (2*x)/(base)) / 2.0) * 255)
             img[i, j, 1] = int(((1.0 + (2*y)/(base)) / 2.0) * 255)
 
-cv2.imwrite("./images/color.png", img)
+cv2.imwrite("../../images/color.png", img)
