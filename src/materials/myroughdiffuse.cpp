@@ -70,8 +70,6 @@ public:
               sin_phi   = dr::sin(phi),
               cos_phi   = dr::cos(phi);
 
-        Float pdf = cos_theta_i * dr::InvPi<Float>;
-
         bs.wo = Normal3f(cos_phi * sin_theta,
                         sin_phi * sin_theta,
                         cos_theta);
@@ -80,7 +78,37 @@ public:
         bs.sampled_type = +BSDFFlags::DiffuseReflection;
         bs.sampled_component = 0;
 
-        UnpolarizedSpectrum value = m_reflectance->eval(si, active);
+        const Float conversionFactor = dr::rcp(dr::sqrt(2.f));
+        Float sigma = m_alpha->eval_1(si, active) * conversionFactor;
+        Float sigma_2 = sigma * sigma;
+
+        Float cos_theta_o = Frame3f::cos_theta(bs.wo);
+
+        active &= cos_theta_o > 0.f;
+
+        Float sin_phi_i = Frame3f::sin_phi(si.wi);
+        Float cos_phi_i = Frame3f::cos_phi(si.wi);
+        Float sin_phi_o = Frame3f::sin_phi(bs.wo);
+        Float cos_phi_o = Frame3f::cos_phi(bs.wo);
+        Float cos_phi_diff = cos_phi_i * cos_phi_o + sin_phi_i * sin_phi_o;
+
+        // Oren-Nayar Diffuse Reflection
+        Float A = 1.f - 0.5f * sigma_2 / (sigma_2 + 0.33f),
+              B = 0.45 * sigma_2 / (sigma_2 + 0.09f),
+              sin_alpha, tan_beta;
+        
+        if (cos_theta_i > cos_theta_o) {
+            sin_alpha = Frame3f::sin_theta(bs.wo);
+            tan_beta = Frame3f::sin_theta(wi.wi) / cos_theta_i;
+        } else {
+            sin_alpha = Frame3f::sin_theta(si.wi);
+            tan_beta = Frame3f::sin_theta(bs.wo) / cos_theta_o;
+        }
+
+        UnpolarizedSpectrum value = m_reflectance->eval(si, active) *
+                                    cos_theta_o * dr::InvPi<Float> *
+                                    ( A + B * dr::maximum(0.f, cos_phi_diff) * sin_alpha * tan_beta) /
+                                    bs.pdf;
 
         return { bs, depolarizer<Spectrum>(value) & (active && bs.pdf > 0.f) };
     }
@@ -95,6 +123,7 @@ public:
         const Float conversionFactor = dr::rcp(dr::sqrt(2.f));
         Float sigma = m_alpha->eval_1(si, active) * conversionFactor;
         Float sigma_2 = sigma * sigma;
+
         Float cos_theta_i = Frame3f::cos_theta(si.wi),
               cos_theta_o = Frame3f::cos_theta(wo);
 
